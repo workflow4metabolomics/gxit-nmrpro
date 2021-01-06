@@ -1,8 +1,8 @@
-<tool id="interactive_tool_nmrpro" tool_type="interactive" name="nmrpro" version="1.0.0">
+<tool id="interactive_tool_nmrpro" tool_type="interactive" name="nmrpro" version="1.0.1">
     <description>Visualization and annotation of LC-MSMS data tool</description>
     <requirements>
-        <!-- <container type="docker">emetabohub/nmrpro:1.0.1</container> -->
-        <container type="docker">nmrpro</container>
+        <container type="docker">emetabohub/nmrpro:1.0.1</container>
+        <!-- <container type="docker">nmrpro</container> -->
     </requirements>
     <entry_points>
         <entry_point name="nmrpro visualisation of $infile.display_name" requires_domain="True">
@@ -10,12 +10,6 @@
             <url>/viewSpectrum/input.tar.gz</url>
         </entry_point>
     </entry_points>
-    <environment_variables>
-        <environment_variable name="DOCKER">TRUE</environment_variable>
-        <environment_variable name="GALAXY_URL">http://172.17.0.1:8080/</environment_variable>
-        <environment_variable name="HISTORY_ID">$__history_id__</environment_variable>
-        <environment_variable name="API_KEY" inject="api_key" />
-    </environment_variables>
     <command><![CDATA[
         cp ${infile} /nmrpro_server/input.tar.gz
         && python /nmrpro_server/manage.py runserver 0.0.0.0:8000
