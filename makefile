@@ -1,7 +1,7 @@
 
 
 docker_name=nmrpro
-port=-p 127.0.0.1:8000:8000
+port=-p 127.0.0.1:8008:8000
 log_path=/var/log/nmrpro.log
 WEB_TAG=1.0.1
 WEB_TARGET=emetabohub/${docker_name}:${WEB_TAG}
@@ -36,7 +36,7 @@ clean:
 
 
 it:
-	docker run -it $(port) $(docker_name)
+	docker run -it  -v /home/lain/Desktop/inrae/NMRPro_galaxy/data:/nmrpro_server/data $(port) $(docker_name)
 
 d:
 	docker run -d $(port) $(docker_name)
