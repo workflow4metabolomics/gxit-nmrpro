@@ -3,7 +3,7 @@
 docker_name=nmrpro
 port=-p 127.0.0.1:8008:8000
 log_path=/var/log/nmrpro.log
-WEB_TAG=1.0.1
+WEB_TAG=1.1.0
 WEB_TARGET=emetabohub/${docker_name}:${WEB_TAG}
 
 re:clean docker

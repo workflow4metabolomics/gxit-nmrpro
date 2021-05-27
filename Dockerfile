@@ -22,9 +22,5 @@ RUN python /nmrpro_server/manage.py migrate
 
 COPY resources/django_nmrpro/encoder.py /usr/local/lib/python2.7/site-packages/django_nmrpro/encoder.py
 COPY resources/django_nmrpro/views.py   /usr/local/lib/python2.7/site-packages/django_nmrpro/views.py
-COPY resources/NMRFileManager.py        /usr/local/lib/python2.7/site-packages/nmrpro/
-COPY resources/readers.py               /usr/local/lib/python2.7/site-packages/nmrpro/
-COPY resources/constants.py             /usr/local/lib/python2.7/site-packages/nmrpro/
-COPY resources/classes/test_classes.py  /usr/local/lib/python2.7/site-packages/nmrpro/classes/
 
 CMD python /nmrpro_server/manage.py runserver 0.0.0.0:8000
