@@ -14,30 +14,33 @@ from .constants import SPARKY_FORMAT
 
 ng_version = float(ng_version[:3])
 
-def fromFile(file, format=AUTODETECT_FORMAT):
+def fromFile(*args, **kwargs):
+    results = [spectra for spectra in _fromFile(*args, **kwargs)  if spectra is not None]
+    if not results:
+        raise NoNMRDataError("The path supplied has no NMR spectra.")
+    return results
+
+def _fromFile(file, format=AUTODETECT_FORMAT):
     if format == AUTODETECT_FORMAT:
-        files = get_files(file)
-        
-        if files is None:
-            raise NoNMRDataError('The path supplied has no NMR spectra: %s' %file)
-        elif len(files) == 1:
-            return fromFile(*files[0])
-        else:
-            results = []
-            for file in files:
-                try:
-                    results.append(fromFile(*file))
-                except IOError:
-                    pass
-            return results
-    if format == BRUKER_FORMAT:
-        return fromBruker(file)
-    if format == PIPE_FORMAT:
-        return fromPipe(file)
-    raise ValueError("Unknown format: {}".format(format))
+        gen = (
+            result
+            for file, format in get_files(file)
+            for result in _fromFile(file, format=format)
+        )
+    elif format == BRUKER_FORMAT:
+        gen = (fromBruker(file), )
+    elif format == PIPE_FORMAT:
+        gen = (fromPipe(file), )
+    else:
+        raise ValueError("Unknown format: {}".format(format))
+    for spectra in gen:
+        yield spectra
 
 def fromBruker(file, remove_filter=True, read_pdata=True):
-    dic, data = bruker.read(file);
+    try:
+        dic, data = bruker.read(file)
+    except IOError:
+        return None
     if read_pdata:
         pdata_file = find_pdata(file, data.ndim)
         
